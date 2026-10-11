@@ -1,12 +1,12 @@
 # dotfiles
 
-- zsh: prompt, алиасы, path и интеграции инструментов.
-- git: имя, email, алиасы и настройки репозиториев.
-- brew: пакеты и приложения в `Brewfile`.
-- cursor: настройки, горячие клавиши и список расширений.
-- vscode: настройки и горячие клавиши.
-- iterm2: профили, цвета, шрифты и горячие клавиши.
-- codex: основной конфиг без токена.
+- **zsh**: prompt, алиасы, path и интеграции инструментов.
+- **git**: имя, email, алиасы и настройки репозиториев.
+- **brew**: пакеты и приложения в `Brewfile`.
+- **cursor**: настройки, горячие клавиши и список расширений.
+- **vscode**: настройки и горячие клавиши.
+- **iterm2**: профили, цвета, шрифты и горячие клавиши.
+- **codex**: основной конфиг без токена.
 
 ## one-line install
 
@@ -14,7 +14,10 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/scythe0x/dotfiles/main/install.sh)"
 ```
 
-скрипт устанавливает homebrew, chezmoi и пакеты из `Brewfile`, затем применяет конфиги. репозиторий: `~/projects/dotfiles`. перед запуском закрой редакторы и iterm2.
+скрипт устанавливает homebrew, chezmoi и пакеты из `Brewfile`, затем применяет конфиги. репозиторий: `~/projects/dotfiles`.
+
+> [!WARNING]
+> перед запуском закрой редакторы и iterm2.
 
 ## расширения cursor
 
@@ -38,4 +41,19 @@ git commit -m "update dotfiles"
 git push
 ```
 
-другие конфиги: `chezmoi add --secrets=error <путь>`. конфиг codex редактируй через `chezmoi edit ~/.codex/config.toml`, чтобы сохранить шаблон без токена.
+конфиг codex редактируй через `chezmoi edit ~/.codex/config.toml`, чтобы сохранить шаблон без токена.
+
+## добавить новый конфиг
+
+подставь путь к существующему конфигу без токенов и паролей:
+
+```sh
+chezmoi add --secrets=error ~/.config/example/config.toml
+cd "$(chezmoi source-path)"
+git add .
+git diff --cached
+git commit -m "add example config"
+git push
+```
+
+на другом компьютере `chezmoi update` загрузит изменения и восстановит файл на том же месте.
