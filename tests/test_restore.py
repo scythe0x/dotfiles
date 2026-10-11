@@ -1,6 +1,5 @@
 """Integration checks against a temporary home; never apply to the real home."""
 
-import json
 import os
 import plistlib
 import subprocess
@@ -47,27 +46,27 @@ class RestoreTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text)
 
-    def secrets(self):
+    def secrets(self) -> str:
         codex = tomllib.loads((self.home / ".codex/config.toml").read_text())
-        opencode = json.loads((self.home / ".config/opencode/config.json").read_text())
-        cursor = json.loads((self.home / ".cursor/mcp.json").read_text())
-        args = cursor["mcpServers"]["duckduckgo-mcp-server"]["args"]
-        return (
-            codex["mcp_servers"]["tmm_-tradermakemoney-"]["http_headers"][
-                "Authorization"
-            ],
-            opencode["provider"]["customapi"]["options"]["apiKey"],
-            args[args.index("--key") + 1],
-        )
+        return codex["mcp_servers"]["tmm_-tradermakemoney-"]["http_headers"][
+            "Authorization"
+        ]
 
     def test_clean_restore_and_idempotence(self):
         self.chezmoi("apply")
-        self.assertEqual(self.secrets(), ("", "", ""))
-        self.assertIn(str(self.home), (self.home / ".zshrc").read_text())
+        self.assertEqual(self.secrets(), "")
+        self.assertIn("$HOME/.bun", (self.home / ".zshrc").read_text())
         self.assertNotIn("/Users/akv", (self.home / ".codex/config.toml").read_text())
-        for name in ("README.md", "Brewfile", "metadata", "tests", "scripts"):
+        for name in (
+            "README.md",
+            "Brewfile",
+            "metadata",
+            "tests",
+            "scripts",
+            "install.sh",
+        ):
             self.assertFalse((self.home / name).exists(), name)
-        for name in (".hyper.js", ".gitconfig", ".codex/AGENTS.md"):
+        for name in (".zshrc", ".zprofile", ".gitconfig", ".codex/config.toml"):
             self.assertTrue((self.home / name).is_file(), name)
         plist = self.home / "Library/Preferences/com.googlecode.iterm2.plist"
         if os.uname().sysname == "Darwin":
@@ -76,8 +75,25 @@ class RestoreTests(unittest.TestCase):
         self.chezmoi("verify")
         self.assertEqual(self.chezmoi("status").stdout, "")
         subprocess.run(["zsh", "-n", str(self.home / ".zshrc")], check=True)
-        for name in (".bashrc", ".bash_profile", ".profile", ".local/bin/env"):
-            subprocess.run(["bash", "-n", str(self.home / name)], check=True)
+        subprocess.run(["zsh", "-n", str(self.home / ".zprofile")], check=True)
+        for name in (
+            ".config",
+            ".hyper.js",
+            ".ideavimrc",
+            ".yarnrc",
+            ".taskrc",
+            ".nuxtrc",
+            ".warp",
+            ".local",
+            ".bashrc",
+            ".bash_profile",
+            ".profile",
+            ".cursor",
+            ".vscode",
+            ".codex/skills",
+            ".codex/AGENTS.md",
+        ):
+            self.assertFalse((self.home / name).exists(), name)
 
     def test_existing_secrets_survive_apply(self):
         self.write(
@@ -85,38 +101,9 @@ class RestoreTests(unittest.TestCase):
             "[mcp_servers.tmm_-tradermakemoney-.http_headers]\n"
             'Authorization = "local-codex-test-token"\n',
         )
-        self.write(
-            ".config/opencode/config.json",
-            json.dumps(
-                {
-                    "provider": {
-                        "customapi": {"options": {"apiKey": "local-opencode-test-key"}}
-                    }
-                }
-            ),
-        )
-        self.write(
-            ".cursor/mcp.json",
-            json.dumps(
-                {
-                    "mcpServers": {
-                        "duckduckgo-mcp-server": {
-                            "args": ["--key", "local-cursor-test-key"]
-                        }
-                    }
-                }
-            ),
-        )
         self.write(".config/unmanaged/settings", "keep me\n")
         self.chezmoi("apply", "--force")
-        self.assertEqual(
-            self.secrets(),
-            (
-                "local-codex-test-token",
-                "local-opencode-test-key",
-                "local-cursor-test-key",
-            ),
-        )
+        self.assertEqual(self.secrets(), "local-codex-test-token")
         self.assertEqual(
             (self.home / ".config/unmanaged/settings").read_text(), "keep me\n"
         )
@@ -124,10 +111,13 @@ class RestoreTests(unittest.TestCase):
 
     def test_missing_secret_fields_are_supported(self):
         self.write(".codex/config.toml", 'model = "existing-model"\n')
-        self.write(".config/opencode/config.json", "{}\n")
-        self.write(".cursor/mcp.json", "{}\n")
         self.chezmoi("apply", "--force")
-        self.assertEqual(self.secrets(), ("", "", ""))
+        self.assertEqual(self.secrets(), "")
+
+    def test_init_sets_source_directory(self):
+        config = self.root / "generated.toml"
+        self.chezmoi("init", "--config-path", str(config))
+        self.assertEqual(tomllib.loads(config.read_text())["sourceDir"], str(SOURCE))
 
     def test_invalid_local_config_fails_without_overwriting_it(self):
         path = ".codex/config.toml"

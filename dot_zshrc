@@ -13,7 +13,7 @@ export PROMPT='${COLOR_DIR}%~ ${COLOR_GIT}%B$(parse_git_branch)${COLOR_DEF} $ %b
 export PYTHONPATH='/usr/local/bin'
 
 # bun
-[ -s "{{ .chezmoi.destDir }}/.bun/_bun" ] && source "{{ .chezmoi.destDir }}/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
@@ -29,12 +29,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=("{{ .chezmoi.destDir }}/.docker/completions" $fpath)
+fpath=("$HOME/.docker/completions" $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
 
-. "$HOME/.local/bin/env"
+export PATH="$HOME/.local/bin:$PATH"
 
 # zoxide
 if command -v zoxide >/dev/null 2>&1; then
@@ -49,7 +49,7 @@ fi
 
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:{{ .chezmoi.destDir }}/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 
 # OpenClaw Completion

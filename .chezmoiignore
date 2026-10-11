@@ -1,9 +1,9 @@
 README.md
 Brewfile
 metadata/**
-scripts/**
 tests/**
 .gitignore
+install.sh
 {{ if ne .chezmoi.os "darwin" }}
 Library/**
 {{ end }}
