@@ -1,7 +1,6 @@
 # dotfiles
 
 - **zsh**: prompt, алиасы, path и интеграции инструментов.
-- **git**: имя, email, алиасы и настройки репозиториев.
 - **brew**: пакеты и приложения в `Brewfile`.
 - **cursor**: настройки, горячие клавиши и список расширений.
 - **vscode**: настройки и горячие клавиши.
@@ -10,11 +9,13 @@
 
 ## one-line install
 
+из каталога скачанного репозитория:
+
 ```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/scythe0x/dotfiles/main/install.sh)"
+bash ./install.sh
 ```
 
-скрипт устанавливает homebrew, chezmoi и пакеты из `Brewfile`, затем применяет конфиги. репозиторий: `~/projects/dotfiles`.
+скрипт устанавливает homebrew, chezmoi и пакеты из `Brewfile`, затем применяет конфиги из этого репозитория.
 
 > [!WARNING]
 > перед запуском закрой редакторы и iterm2.
@@ -30,7 +31,7 @@ xargs -n 1 cursor --install-extension < "$(chezmoi source-path)/metadata/cursor-
 ## сохранить конфиги с mac
 
 ```sh
-chezmoi add --secrets=error ~/.zshrc ~/.zprofile ~/.gitconfig
+chezmoi add --secrets=error ~/.zshrc ~/.zprofile
 cd "$(chezmoi source-path)"
 brew bundle dump --file=Brewfile --force --formula --cask --tap --no-describe --no-restart
 cursor --list-extensions > metadata/cursor-extensions.txt

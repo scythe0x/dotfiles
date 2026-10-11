@@ -1,7 +1,6 @@
 README.md
 Brewfile
 metadata/**
-tests/**
 .gitignore
 install.sh
 {{ if ne .chezmoi.os "darwin" }}

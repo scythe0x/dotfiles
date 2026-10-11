@@ -3,6 +3,3 @@
 .env.*
 *.key
 *.pem
-__pycache__/
-*.py[cod]
-.ruff_cache/

@@ -20,7 +20,7 @@ main() {
     fi
 
     local brew_bin brew_env installer source_dir
-    source_dir="$HOME/projects/dotfiles"
+    source_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
     if ! brew_bin="$(find_brew)"; then
         installer="$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -32,13 +32,11 @@ main() {
     eval "$brew_env"
     "$brew_bin" install chezmoi
 
-    chezmoi --source "$source_dir" init https://github.com/scythe0x/dotfiles.git
+    chezmoi --source "$source_dir" init
     "$brew_bin" bundle install --file="$source_dir/Brewfile" --no-upgrade
     chezmoi --source "$source_dir" apply
 
     printf '%s\n' 'done. open a new terminal to load your zsh settings.'
 }
 
-if [[ -z "${BASH_SOURCE[0]:-}" || "${BASH_SOURCE[0]}" == "$0" ]]; then
-    main "$@"
-fi
+main "$@"
