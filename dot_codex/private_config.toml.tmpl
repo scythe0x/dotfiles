@@ -1,0 +1,179 @@
+{{- $current := dict -}}
+{{- $path := joinPath .chezmoi.destDir ".codex/config.toml" -}}
+{{- if stat $path -}}
+{{- $current = include $path | fromToml -}}
+{{- end -}}
+notify = ["{{ .chezmoi.destDir }}/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
+model = "gpt-6.1-sol"
+model_reasoning_effort = "medium"
+service_tier = "default"
+sandbox_mode = "workspace-write"
+web_search = "live"
+
+[desktop]
+followUpQueueMode = "steer"
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = false
+selected-avatar-id = "pet_6ab46c7b2ecc8191add0a9a8166c5a54"
+preventSleepWhileRunning = true
+show-context-window-usage = true
+keepRemoteControlAwakeWhilePluggedIn = true
+appshotSoundEnabled = false
+
+[desktop.open-in-target-preferences]
+global = "cursor"
+
+[desktop.appearanceDarkChromeTheme]
+accent = "#3a83f7"
+accentSource = "chatgpt"
+contrast = 60
+ink = "#ffffff"
+opaqueWindows = false
+surface = "#0e0e0e"
+
+[desktop.appearanceDarkChromeTheme.fonts]
+
+[desktop.appearanceDarkChromeTheme.semanticColors]
+diffAdded = "#40c977"
+diffRemoved = "#fa423e"
+skill = "#ad7bf9"
+
+[marketplaces.openai-bundled]
+source_type = "local"
+source = "{{ .chezmoi.destDir }}/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+source_type = "local"
+source = "{{ .chezmoi.destDir }}/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[marketplaces.nteract-plugins]
+source_type = "git"
+source = "https://github.com/nteract/agent-plugins.git"
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."code-review@openai-bundled"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
+[plugins."nteract@nteract-plugins"]
+enabled = false
+
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "{{ .chezmoi.destDir }}/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+CODEX_HOME = "{{ .chezmoi.destDir }}/.codex"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.928.20755"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"{{ .chezmoi.destDir }}/.codex/plugins/cache/openai-bundled/browser/26.928.20755/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+SKY_CUA_SERVICE_PATH = "{{ .chezmoi.destDir }}/.codex/computer-use/Codex Computer Use.app"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = true
+
+[projects."{{ .chezmoi.destDir }}/Documents/Codex/2026-09-24/hatch-pet-users-akv-codex-skills"]
+trust_level = "trusted"
+
+[projects."{{ .chezmoi.destDir }}/projects/buyout-hub"]
+trust_level = "trusted"
+
+[projects."{{ .chezmoi.destDir }}/projects/carrotsbot"]
+trust_level = "trusted"
+
+[projects."{{ .chezmoi.destDir }}/projects/cryptotape"]
+trust_level = "trusted"
+
+[projects."{{ .chezmoi.destDir }}/Documents/ChatGPT/crypto"]
+trust_level = "trusted"
+
+[projects."{{ .chezmoi.destDir }}/projects/algoeb"]
+trust_level = "trusted"
+
+[[skills.config]]
+path = "{{ .chezmoi.destDir }}/.codex/skills/hatch-pet/SKILL.md"
+enabled = false
+
+[features]
+memories = true
+
+[memories]
+generate_memories = true
+use_memories = true
+
+[sandbox_workspace_write]
+network_access = true
+
+[mcp_servers.paper]
+command = "{{ .chezmoi.destDir }}/.paper/bin/paper"
+args = [ "mcp" ]
+
+[mcp_servers.paper.tools.create_page]
+approval_mode = "approve"
+
+[mcp_servers.paper.tools.create_artboard]
+approval_mode = "approve"
+
+[mcp_servers.paper.tools.write_html]
+approval_mode = "approve"
+
+[mcp_servers.paper.tools.update_styles]
+approval_mode = "approve"
+
+[mcp_servers.paper.tools.delete_nodes]
+approval_mode = "approve"
+
+[mcp_servers.paper.tools.set_text_content]
+approval_mode = "approve"
+
+[mcp_servers.tmm_-tradermakemoney-]
+enabled = true
+url = "https://tradermake.money/api/v2/mcp"
+
+[mcp_servers.tmm_-tradermakemoney-.http_headers]
+Authorization = {{ dig "mcp_servers" "tmm_-tradermakemoney-" "http_headers" "Authorization" "" $current | toJson }}

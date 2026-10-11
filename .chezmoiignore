@@ -1,0 +1,9 @@
+README.md
+Brewfile
+metadata/**
+scripts/**
+tests/**
+.gitignore
+{{ if ne .chezmoi.os "darwin" }}
+Library/**
+{{ end }}

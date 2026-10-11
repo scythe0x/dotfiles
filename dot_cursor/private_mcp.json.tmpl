@@ -1,0 +1,30 @@
+{{- $key := "" -}}
+{{- $path := joinPath .chezmoi.destDir ".cursor/mcp.json" -}}
+{{- if stat $path -}}
+{{- $current := include $path | fromJson -}}
+{{- $args := dig "mcpServers" "duckduckgo-mcp-server" "args" (list) $current -}}
+{{- range $i, $arg := $args -}}
+{{- if and (eq $arg "--key") (lt (add $i 1) (len $args)) -}}
+{{- $key = index $args (add $i 1) -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{
+  "mcpServers": {
+    "Figma Desktop": {
+      "url": "http://127.0.0.1:3845/mcp",
+      "headers": {}
+    },
+    "duckduckgo-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@nickclyde/duckduckgo-mcp-server",
+        "--key",
+        {{ $key | toJson }}
+      ]
+    }
+  }
+}

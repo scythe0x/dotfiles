@@ -1,0 +1,56 @@
+# show git branch
+function parse_git_branch() {
+    git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/\1/p'
+}
+COLOR_DEF=$'%f'
+COLOR_USR=$'%F{243}'
+COLOR_DIR=$'%F{197}'
+COLOR_GIT=$'%F{39}'
+setopt PROMPT_SUBST
+export PROMPT='${COLOR_DIR}%~ ${COLOR_GIT}%B$(parse_git_branch)${COLOR_DEF} $ %b'
+
+# python
+export PYTHONPATH='/usr/local/bin'
+
+# bun
+[ -s "{{ .chezmoi.destDir }}/.bun/_bun" ] && source "{{ .chezmoi.destDir }}/.bun/_bun"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# spoofdpi
+export PATH=$PATH:~/.spoofdpi/bin
+export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
+
+# webstorm
+___MY_VMOPTIONS_SHELL_FILE="${HOME}/.jetbrains.vmoptions.sh"; if [ -f "${___MY_VMOPTIONS_SHELL_FILE}" ]; then . "${___MY_VMOPTIONS_SHELL_FILE}"; fi
+alias c='code'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=("{{ .chezmoi.destDir }}/.docker/completions" $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+. "$HOME/.local/bin/env"
+
+# zoxide
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi
+
+# fzf
+# Set up fzf key bindings and fuzzy completion
+if command -v fzf >/dev/null 2>&1; then
+    source <(fzf --zsh)
+fi
+
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:{{ .chezmoi.destDir }}/.lmstudio/bin"
+# End of LM Studio CLI section
+
+# OpenClaw Completion
+[ -f "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"

@@ -1,0 +1,83 @@
+Adobe Activation Tool
+AirPods Sanity
+BetterDisplay
+CapCut
+ChatGPT
+CleanShot X
+CoinGlass
+Craft
+Cursor
+Dato
+Discord
+Docker
+Figma
+GarageBand
+Ghostty
+GitHub Desktop
+Google Chrome
+Hand Mirror
+INCY
+Insomnia
+Inspect
+Keka
+KeyboardCleanTool
+Keynote
+LM Studio
+Linear
+LuLu
+Mi Home
+Microsoft Defender Shim
+Microsoft Excel
+Microsoft OneNote
+Microsoft Outlook
+Microsoft PowerPoint
+Microsoft Word
+Mos
+Notion
+Numbers
+Octarine
+Ollama
+OneDrive
+Outline
+Pages
+Paper
+Ping
+Postgres
+Proton Authenticator
+Proton Mail
+Proton Mail Uninstaller
+Proxyman
+Raycast
+RunJS
+SF Symbols
+Safari
+Search
+Simplenote
+Slack
+Sota Connect
+Spark Desktop
+T3 Code (Alpha)
+Telegram
+Telephone
+Throne
+Todoist
+Tor Browser
+TradingView
+UTM
+Unicorn HTTPS
+V2Box
+VMware Fusion
+Vataga.terminal
+Visual Studio
+Visual Studio Code
+Wispr Flow
+Xcode
+Zen
+balenaEtcher
+iMazing
+iMovie
+iTerm
+iTermBrowserPlugin 2
+nteract
+v2RayTun
+zoom.us
